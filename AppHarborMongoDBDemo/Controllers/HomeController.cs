@@ -29,9 +29,7 @@ namespace AppHarborMongoDBDemo.Controllers
 		{
 			var connectionstring =
 				ConfigurationManager.AppSettings.Get("MONGOHQ_URL");
-				//"mongodb://localhost/Things";
-			var mongoUrl = new MongoUrl(connectionstring);
-			var database = MongoDatabase.Create(mongoUrl);
+			var database = MongoDatabase.Create(connectionstring);
 			return database.GetCollection<Thingy>("Thingies");
 		}
 	}
