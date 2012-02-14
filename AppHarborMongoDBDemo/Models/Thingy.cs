@@ -1,10 +1,8 @@
-﻿using MongoDB.Bson;
-
+﻿
 namespace AppHarborMongoDBDemo.Models
 {
-	public class Thingy
+	public class Thingy : Entity
 	{
-		public ObjectId Id { get; set; }
 		public string Name { get; set; }
 	}
 }
