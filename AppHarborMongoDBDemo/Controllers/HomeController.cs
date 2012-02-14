@@ -1,16 +1,21 @@
-﻿using System.Configuration;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using AppHarborMongoDBDemo.Models;
 using MongoDB.Driver;
 
 namespace AppHarborMongoDBDemo.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController : BaseController
 	{
+		private readonly MongoCollection<Thingy> _collection;
+
+		public HomeController()
+		{
+			_collection = Database.GetCollection<Thingy>("Thingies");
+		}
+
 		public ActionResult Index()
 		{
-			var thingies = GetCollection().FindAll();
-			return View(thingies);
+			return View(_collection.FindAll());
 		}
 
 		public ActionResult New()
@@ -20,17 +25,8 @@ namespace AppHarborMongoDBDemo.Controllers
 
 		public ActionResult Create(Thingy thingy)
 		{
-			var collection = GetCollection();
-			collection.Insert(thingy);
+			_collection.Insert(thingy);
 			return RedirectToAction("Index");
-		}
-
-		private MongoCollection<Thingy> GetCollection()
-		{
-			var connectionstring =
-				ConfigurationManager.AppSettings.Get("MONGOHQ_URL");
-			var database = MongoDatabase.Create(connectionstring);
-			return database.GetCollection<Thingy>("Thingies");
 		}
 	}
 }
